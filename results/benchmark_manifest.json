@@ -1,0 +1,45 @@
+{
+  "notes": [
+    "Canonical thesis results: ensemble_fix_mytag_clinical_2 / RUN_TAG=mytag.",
+    "Paths are repo-relative (frozen CSVs under results/).",
+    "Supplementary rows (spatial_v2, older clinical pairing) omitted from this public manifest."
+  ],
+  "rows": [
+    {
+      "id": "01_plain_p90_p10_vol_mm_en",
+      "model": "Plain AE · compact trajectory",
+      "representation": "p90_p10_vol_mm (Stage B slice_meta NPZ)",
+      "classifier_or_fusion": "Elastic-Net LR (C=0.1, l1_ratio=0.2)",
+      "kind": "single_row_summary_csv",
+      "path": "towers/plain_p90_p10_vol_mm_en_summary.csv"
+    },
+    {
+      "id": "02_monai_cluster_hist_rbf",
+      "model": "MONAI AE · cluster histogram",
+      "representation": "cluster_hist · Stage B spherical k-means (repeat_2 NPZ)",
+      "classifier_or_fusion": "RBF-SVC (C=1, gamma=scale)",
+      "kind": "single_row_summary_csv",
+      "path": "towers/monai_cluster_hist_rbf_summary.csv"
+    },
+    {
+      "id": "03_ensemble_w0p5",
+      "model": "Late ensemble (clinical_2)",
+      "representation": "Plain p90_p10_vol_mm + MONAI cluster_hist · same-split OOS join",
+      "classifier_or_fusion": "fixed softmax blend w=0.5 (prob)",
+      "kind": "ensemble_method",
+      "summary_methods": "main_summary_methods.csv",
+      "per_split_metrics": "ensemble_clinical2_per_split_metrics.csv",
+      "method_key": "ensemble_fixed_w0.5"
+    },
+    {
+      "id": "04_ensemble_w0p5_plus_age_sex_lr",
+      "model": "Ensemble + clinical calibration (clinical_2)",
+      "representation": "same pairing as row 03",
+      "classifier_or_fusion": "[ens_w0.5] + age + sex → balanced LR (LOO train feature)",
+      "kind": "ensemble_method",
+      "summary_methods": "main_summary_methods.csv",
+      "per_split_metrics": "ensemble_clinical2_per_split_metrics.csv",
+      "method_key": "ensemble_fixed_w0.5_plus_age_sex_lr"
+    }
+  ]
+}

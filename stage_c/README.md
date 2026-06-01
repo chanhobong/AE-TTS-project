@@ -21,19 +21,44 @@ stage_c/
 
 ---
 
-## Quick start (thesis default)
+## Quick start
+
+### Thesis canonical (`clinical_2`, `RUN_TAG=mytag`)
+
+Uses Plain **p90_p10_vol_mm + Elastic-Net LR** and MONAI **cluster_hist + RBF-SVC** on the repeat_2 NPZ layout. Frozen numbers: [`../results/README.md`](../results/README.md).
 
 ```bash
 export AE_TTS_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "${AE_TTS_ROOT}"
 
-# Local splits (copy from secure storage; never commit)
 mkdir -p data/splits
 # cp .../train.csv data/splits/  etc.
 
-export LATENT_VOL=/Volumes/Chanho_PhD_Project/latent_data   # NPZ root on disk
-export RUN_TAG=thesis_v1
+export LATENT_VOL=/Volumes/Chanho_PhD_Project/latent_data
+export RUN_TAG=mytag
 
+bash stage_c/run/run_paired_ensemble_mytag.sh
+```
+
+Skip tower re-run if OOS CSVs already exist: `SKIP_TOWER_RERUN=1 bash stage_c/run/run_paired_ensemble_mytag.sh`
+
+| Tower | Pooling | Classifier |
+|-------|---------|------------|
+| Plain | `p90_p10_vol_mm` | `logistic_en_C0.1_r0.2` |
+| MONAI | `cluster_hist` | `rbf_svc` |
+
+Outputs:
+
+```text
+${LATENT_VOL}/out_plain_p90_p10_vol_mm_head_repeat_combo_plain_slice_meta_ae2/run_${RUN_TAG}/...
+${LATENT_VOL}/out_monai_ae_cluster_hist_rbf_repeat_2/run_${RUN_TAG}/...
+${LATENT_VOL}/ensemble_fix_mytag_clinical_2/run_${RUN_TAG}/summary_methods.csv
+```
+
+### Generic demo (spatial_v2-friendly defaults)
+
+```bash
+export RUN_TAG=thesis_v1
 bash stage_c/run/run_paired_ensemble.sh
 ```
 
@@ -60,7 +85,8 @@ ${LATENT_VOL}/ensemble_${RUN_TAG}/run_${RUN_TAG}/summary_methods.csv
 |--------|---------|
 | [run/run_plain_repeat.sh](run/run_plain_repeat.sh) | Plain NPZ only |
 | [run/run_monai_repeat.sh](run/run_monai_repeat.sh) | MONAI NPZ only |
-| [run/run_paired_ensemble.sh](run/run_paired_ensemble.sh) | Both + late fusion + clinical stack |
+| [run/run_paired_ensemble.sh](run/run_paired_ensemble.sh) | Generic: std + cluster_hist + fusion |
+| [run/run_paired_ensemble_mytag.sh](run/run_paired_ensemble_mytag.sh) | **Thesis canonical** (`clinical_2`) |
 
 Environment:
 

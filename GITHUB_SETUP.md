@@ -17,24 +17,24 @@ mkdir -p data/splits outputs
 # cp /secure/path/train.csv data/splits/
 ```
 
-## 2. Commit (code only)
+## 2. Commit (code + frozen results)
 
 ```bash
 git add README.md PIPELINE.md .gitignore GITHUB_SETUP.md
 git add stage_a/ stage_b/ stage_c/
+git add results/
 git add data/README.md data/splits/.gitkeep
 git add utils/scripts/README.md
-# Optional legacy: git add utils/scripts/   (skip for a clean public repo)
 # Do NOT: git add data/splits/*.csv outputs/ latent_data/ *.pth *.npz
 git status
-git commit -m "Add stage_a/b/c pipeline and downstream eval"
+git commit -m "Add canonical Stage C results (clinical_2) and thesis reproduce script"
 git push -u origin main
 ```
 
 Suggested tag after Stage C freeze:
 
 ```bash
-git tag -a v0.3-stage-c -m "Stage C repeated eval and ensemble"
+git tag -a v0.3-stage-c -m "Stage C eval + clinical_2 main results"
 git push origin v0.3-stage-c
 ```
 
@@ -51,8 +51,10 @@ Upload to GitHub Release or Zenodo:
 
 - `plain_ae checkpoint` + SHA256
 - `monai_ae checkpoint` + SHA256
-- Sample NPZ schema v2 (one de-identified patient optional)
+- Stage B NPZ directory layout doc (or one de-identified sample NPZ)
 - `stage_b/logs/*.out` showing `--train_csv` / `--val_csv` only
+
+Link the release from README **Reproducibility assets**.
 
 ## 5. Repo name
 
@@ -63,4 +65,15 @@ Topics: `medical-imaging`, `autoencoder`, `ct`, `representation-learning`
 ## 6. What stays outside repo
 
 - `_archive/` — `plain_AE_stageA/`, old Stage B, `diffae-master/`
-- Full `AE_TTS/` monolith (Report, Dissertation, latent_data, figures) — separate private repo or omit
+- Full local monolith (`Report/`, `Dissertation/`, `Presentation/`, `figures/`, patient CSVs) — private only
+- Exploratory `utils/scripts/` sweeps — optional; canonical path is `stage_c/` + `results/`
+
+## 7. Verify frozen results table
+
+```bash
+python3 stage_c/analysis/build_benchmark_comparison_table.py \
+  --manifest results/benchmark_manifest.json \
+  --out_csv results/benchmark_comparison_table.csv
+```
+
+Expected main rows: Plain 0.874, MONAI 0.796, ensemble 0.891, +clinical 0.915 (ROC mean).

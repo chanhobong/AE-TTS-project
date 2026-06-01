@@ -118,8 +118,14 @@ def main() -> None:
         kind = str(spec["kind"])
 
         notes = ""
+        def _resolve_path(p: str) -> str:
+            p = os.path.expanduser(p)
+            if os.path.isabs(p):
+                return os.path.abspath(p)
+            return os.path.abspath(os.path.join(manifest_dir, p))
+
         if kind == "single_row_summary_csv":
-            csv_path = os.path.abspath(os.path.expanduser(spec["path"]))
+            csv_path = _resolve_path(spec["path"])
             if not os.path.isfile(csv_path):
                 merged.append(dict(zip(OUT_COLS, [bid, model, rep, clf, *[""] * 6, "MISSING CSV"])))  # type: ignore
                 continue
@@ -134,7 +140,7 @@ def main() -> None:
             continue
 
         if kind == "pick_best_from_summary_csv":
-            csv_path = os.path.abspath(os.path.expanduser(spec["path"]))
+            csv_path = _resolve_path(spec["path"])
             metric = str(spec.get("pick_metric", "roc_mean"))
             if not os.path.isfile(csv_path):
                 merged.append(
@@ -162,8 +168,8 @@ def main() -> None:
             continue
 
         if kind == "ensemble_method":
-            smp = os.path.abspath(os.path.expanduser(spec["summary_methods"]))
-            psp = os.path.abspath(os.path.expanduser(spec["per_split_metrics"]))
+            smp = _resolve_path(spec["summary_methods"])
+            psp = _resolve_path(spec["per_split_metrics"])
             method_key = str(spec["method_key"])
             if not (os.path.isfile(smp) and os.path.isfile(psp)):
                 merged.append(dict(zip(OUT_COLS, [bid, model, rep, clf, *[""] * 6, "MISSING ensemble CSV"])))

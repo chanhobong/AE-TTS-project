@@ -19,7 +19,7 @@ data/*.csv
 latent_data/
 attention_results*.csv
 *.csv
-!Report/benchmark_comparison_table.csv
+!results/**/*.csv
 
 # Slurm / cluster (optional: keep stage_b/logs/*.out if small — uncomment next line to ignore all)
 # stage_b/logs/

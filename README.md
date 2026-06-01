@@ -4,6 +4,19 @@ Dual slice-level autoencoders (Plain + MONAI) → spatial Stage B (schema v2) �
 
 **This repository contains code and documentation only.** NIfTI volumes, checkpoints, NPZ embeddings, and train/val/test CSV splits are **not** included.
 
+## Main results (thesis canonical)
+
+100 repeated **patient-level** splits (`RUN_TAG=mytag`). Details: [`results/README.md`](results/README.md).
+
+| Method | ROC-AUC (mean ± std) | PR-AUC |
+|--------|---------------------|--------|
+| Plain · p90_p10_vol_mm + EN-LR | 0.874 ± 0.056 | 0.877 |
+| MONAI · cluster_hist + RBF-SVC | 0.796 ± 0.071 | 0.831 |
+| Late ensemble w=0.5 | **0.891 ± 0.053** | 0.908 |
+| Ensemble + age/sex LR stack | **0.915 ± 0.048** | 0.930 |
+
+Reproduce (local NPZ + splits): `bash stage_c/run/run_paired_ensemble_mytag.sh`
+
 ## Quick start
 
 ```bash
@@ -56,6 +69,7 @@ Details: [PIPELINE.md](PIPELINE.md)
 | [stage_a/](stage_a/) | Stage A — Plain AE & MONAI AE training |
 | [stage_b/](stage_b/) | Stage B — embeddings, spatial v2 NPZ, k-means |
 | [stage_c/](stage_c/) | Stage C — patient pooling, classifiers, ensemble |
+| [results/](results/) | Frozen thesis metrics (`clinical_2`, no patient IDs) |
 | [data/](data/) | Split CSV **schema** (files stay local) |
 
 Legacy trees (`plain_AE_stageA/`, old Stage B, etc.) stay **outside** this repo; see [stage_b/DEPRECATED.md](stage_b/DEPRECATED.md).
@@ -72,6 +86,7 @@ Host on **GitHub Release**, Zenodo, or Hugging Face; link SHA/path in README:
 
 - `v0.1-stage-a` — Stage A scripts frozen
 - `v0.2-stage-b-spatial-v2` — Stage B + schema v2 NPZ layout
+- `v0.3-stage-c` — Stage C eval + `clinical_2` main results ([`results/`](results/))
 
 ## Topics
 

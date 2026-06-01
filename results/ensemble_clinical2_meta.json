@@ -1,0 +1,33 @@
+{
+  "run_tag": "mytag",
+  "canonical_name": "ensemble_fix_mytag_clinical_2",
+  "plain_tower": {
+    "pooling": "p90_p10_vol_mm",
+    "classifier": "logistic_en_C0.1_r0.2",
+    "out_dir_env": "OUT_DIR_PLAIN=out_plain_p90_p10_vol_mm_head_repeat_combo_plain_slice_meta_ae2",
+    "npz_dir_env": "PLAIN_NPZ_DIR=${LATENT_VOL}/diff3dformer_stageB_plain_ae_slice_meta/patients"
+  },
+  "monai_tower": {
+    "pooling": "cluster_hist",
+    "classifier": "rbf_svc",
+    "out_dir_env": "OUT_DIR_MONAI=out_monai_ae_cluster_hist_rbf_repeat_2",
+    "npz_dir_env": "MONAI_NPZ_DIR=${LATENT_VOL}/diff3dformer_stageB_monai_ae/patients"
+  },
+  "filter_model_plain": "logistic_en_C0.1_r0.2",
+  "filter_model_monai": "rbf_svc",
+  "require_split_protocol_match": true,
+  "split_driver_protocol_only": true,
+  "split_col": "repeat_id",
+  "n_rows_joined_plain_monai_inner": 2900,
+  "n_rows_joined": 2900,
+  "n_splits": 100,
+  "w_grid": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+  "fixed_w": 0.5,
+  "note_oracle": "ensemble_oracle picks w per split on test ROC — exploratory only; not reported in main table.",
+  "clinical_labels": "data/splits/{train,val,test}.csv (local; not in git)",
+  "ensemble_plus_age_sex_lr": {
+    "classifier": "LogisticRegression(class_weight=balanced, lbfgs, max_iter=8000)",
+    "train_ensemble_feature": "Leave-one-split-out mean of fixed-w ensemble prob on other splits' OOS rows for that patient; fallback global mean if missing.",
+    "scaling": "MinMaxScaler on train for ensemble score and age; sex already 0/1."
+  }
+}
