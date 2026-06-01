@@ -1,0 +1,55 @@
+# Large artifacts & patient data (never commit)
+outputs/
+latent_data/
+figures/
+Dataset/
+*.nii
+*.nii.gz
+
+# Checkpoints & embeddings
+*.pth
+*.pt
+*.ckpt
+*.npz
+*.npy
+
+# Split CSVs & result tables (local / external only)
+data/splits/
+data/*.csv
+latent_data/
+attention_results*.csv
+*.csv
+!Report/benchmark_comparison_table.csv
+
+# Slurm / cluster (optional: keep stage_b/logs/*.out if small — uncomment next line to ignore all)
+# stage_b/logs/
+
+# Python / OS
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.mplconfig/
+.DS_Store
+.cursor/
+.claude/
+
+# LaTeX build
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.out
+*.bbl
+*.blg
+*.xdv
+
+# Legacy (keep outside GitHub or in local _archive/ only)
+_archive/
+plain_AE_stageA/
+MONAI/
+diffae-master/
