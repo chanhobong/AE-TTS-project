@@ -1,4 +1,4 @@
-# ae-tts-pipeline
+# AT-TTS-pipeline
 
 Dual slice-level autoencoders (Plain + MONAI) → spatial Stage B (schema v2) → patient-level downstream evaluation on cardiac CT (TTS vs control).
 
