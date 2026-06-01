@@ -12,7 +12,7 @@ cd "${AE_TTS_ROOT}"
 
 # 1) Stage A — train AEs on train+val patients only (see stage_a/README.md)
 # 2) Stage B — frozen encoder → spatial tokens + k-means → patient .npz (see stage_b/README.md)
-# 3) Stage C — classifiers / repeated splits (utils/scripts/; see PIPELINE.md)
+# 3) Stage C — classifiers / repeated splits (stage_c/; see PIPELINE.md)
 ```
 
 Place your split files locally (not in git):
@@ -55,7 +55,7 @@ Details: [PIPELINE.md](PIPELINE.md)
 |------|------|
 | [stage_a/](stage_a/) | Stage A — Plain AE & MONAI AE training |
 | [stage_b/](stage_b/) | Stage B — embeddings, spatial v2 NPZ, k-means |
-| [utils/scripts/](utils/scripts/) | Stage C — repeated eval, ensemble, spatial viz |
+| [stage_c/](stage_c/) | Stage C — patient pooling, classifiers, ensemble |
 | [data/](data/) | Split CSV **schema** (files stay local) |
 
 Legacy trees (`plain_AE_stageA/`, old Stage B, etc.) stay **outside** this repo; see [stage_b/DEPRECATED.md](stage_b/DEPRECATED.md).

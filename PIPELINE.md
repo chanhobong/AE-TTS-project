@@ -1,7 +1,6 @@
 # Pipeline: Stage A → B → C
 
-Official entry points: **`stage_a/`** and **`stage_b/`**.  
-Stage C (classification, repeated splits, ensemble) currently lives in **`utils/scripts/`** until a `stage_c/` package is split out.
+Official entry points: **`stage_a/`**, **`stage_b/`**, and **`stage_c/`**.
 
 Environment (all stages):
 
@@ -61,22 +60,28 @@ Legacy Stage B (non-spatial): [stage_b/DEPRECATED.md](stage_b/DEPRECATED.md).
 
 ---
 
-## Stage C — downstream (current: `utils/scripts/`)
+## Stage C — downstream
+
+**Directory:** [stage_c/](stage_c/)
 
 Patient-level features from NPZ (mean / std / cluster_hist / …) → logistic or SVC → optional late fusion (Plain + MONAI probabilities).
 
-Key scripts:
+```bash
+export LATENT_VOL=/Volumes/Chanho_PhD_Project/latent_data
+export RUN_TAG=thesis_v1
+bash stage_c/run/run_paired_ensemble.sh
+```
 
-| Script | Purpose |
-|--------|---------|
-| `repeated_stratified_shuffle_eval.py` | 100× patient-level stratified splits |
-| `ensemble_oos_same_split_eval.py` | Matched-split Plain/MONAI ensemble |
-| `clinical_vs_clinical_plus_ensemble_repeat.py` | Clinical-only vs clinical+ensemble |
-| `plot_spatial_coeff_grid_overlay.py` | Spatial coef overlays (schema v2) |
+| Component | Path |
+|-----------|------|
+| Repeated eval | `stage_c/eval/repeated_stratified_shuffle_eval.py` |
+| Paired ensemble | `stage_c/run/run_paired_ensemble.sh` |
+| Clinical baseline | `stage_c/eval/clinical_only_repeated_eval.py` |
+| Spatial viz (appendix) | `stage_c/viz/` |
 
-Split policy for repeated eval: pool **all** labelled patients with NPZ; split is **patient-level** after pooling; scaler fit on train fold only.
+Split policy: pool all labelled patients with NPZ; **patient-level** split after pooling; scaler fit on train fold only.
 
-Paths helper: `utils/scripts/spatial_viz_paths.example.sh` (set `VOL_PHD_PROJECT`, `PATIENT_ID`, etc.).
+Legacy exploratory scripts: `utils/scripts/` (see [utils/scripts/README.md](utils/scripts/README.md)).
 
 ---
 

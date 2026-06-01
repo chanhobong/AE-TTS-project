@@ -17,17 +17,25 @@ mkdir -p data/splits outputs
 # cp /secure/path/train.csv data/splits/
 ```
 
-## 2. First commit (code only)
+## 2. Commit (code only)
 
 ```bash
-git init
-git add README.md PIPELINE.md .gitignore
-git add stage_a/ stage_b/ data/README.md data/splits/.gitkeep
-git add utils/scripts/repeated_stratified_shuffle_eval.py   # Stage C examples
-git add utils/scripts/spatial_viz_paths.example.sh utils/scripts/SPATIAL_VIZ_COMMANDS.md
-# Do NOT: git add data/*.csv outputs/ latent_data/ *.pth *.npz
-git status   # verify no CSV/NIfTI/checkpoints
-git commit -m "Initial public pipeline: stage_a, stage_b, docs"
+git add README.md PIPELINE.md .gitignore GITHUB_SETUP.md
+git add stage_a/ stage_b/ stage_c/
+git add data/README.md data/splits/.gitkeep
+git add utils/scripts/README.md
+# Optional legacy: git add utils/scripts/   (skip for a clean public repo)
+# Do NOT: git add data/splits/*.csv outputs/ latent_data/ *.pth *.npz
+git status
+git commit -m "Add stage_a/b/c pipeline and downstream eval"
+git push -u origin main
+```
+
+Suggested tag after Stage C freeze:
+
+```bash
+git tag -a v0.3-stage-c -m "Stage C repeated eval and ensemble"
+git push origin v0.3-stage-c
 ```
 
 ## 3. Tags
