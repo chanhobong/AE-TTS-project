@@ -1,4 +1,5 @@
 branch_id,model,representation,classifier_or_fusion,ROC_mean,ROC_std,ROC_p2p5,PR_mean,PR_std,PR_p2p5,notes
+00_clinical_age_sex_lr,Clinical baseline,"age (MinMax on train) + sex (M=0, F=1)",LogisticRegression (class_weight=balanced),0.7499047619047619,0.0807546043420991,0.5708333333333333,0.7559428236071442,0.0826090384343735,0.5943896632611281,
 01_plain_p90_p10_vol_mm_en,Plain AE · compact trajectory,p90_p10_vol_mm (Stage B slice_meta NPZ),"Elastic-Net LR (C=0.1, l1_ratio=0.2)",0.8739999999999999,0.0564016210506653,0.7641666666666668,0.8765777127300873,0.0631854666525159,0.7521763720947493,
 02_monai_cluster_hist_rbf,MONAI AE · cluster histogram,cluster_hist · Stage B spherical k-means (repeat_2 NPZ),"RBF-SVC (C=1, gamma=scale)",0.7955,0.0708411520294643,0.6666666666666666,0.830825013062562,0.0690956801134235,0.6848511533332757,
 03_ensemble_w0p5,Late ensemble (clinical_2),Plain p90_p10_vol_mm + MONAI cluster_hist · same-split OOS join,fixed softmax blend w=0.5 (prob),0.8906190476190475,0.0533097524400125,0.7904761904761904,0.9078322091971474,0.0448802207879952,0.8004024506267153,ensemble:ensemble_fixed_w0.5 from=results

@@ -21,6 +21,9 @@ attention_results*.csv
 *.csv
 !results/**/*.csv
 
+# Local eval scratch (may contain patient IDs in repeats.csv)
+results/_runs/
+
 # Slurm / cluster (optional: keep stage_b/logs/*.out if small — uncomment next line to ignore all)
 # stage_b/logs/
 

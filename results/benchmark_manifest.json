@@ -6,6 +6,14 @@
   ],
   "rows": [
     {
+      "id": "00_clinical_age_sex_lr",
+      "model": "Clinical baseline",
+      "representation": "age (MinMax on train) + sex (M=0, F=1)",
+      "classifier_or_fusion": "LogisticRegression (class_weight=balanced)",
+      "kind": "single_row_summary_csv",
+      "path": "towers/clinical_age_sex_lr_summary.csv"
+    },
+    {
       "id": "01_plain_p90_p10_vol_mm_en",
       "model": "Plain AE · compact trajectory",
       "representation": "p90_p10_vol_mm (Stage B slice_meta NPZ)",

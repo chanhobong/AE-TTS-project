@@ -8,12 +8,13 @@ Dual slice-level autoencoders (Plain + MONAI) → spatial Stage B (schema v2) �
 
 100 repeated **patient-level** splits (`RUN_TAG=mytag`). Details: [`results/README.md`](results/README.md).
 
-| Method | ROC-AUC (mean ± std) | PR-AUC |
-|--------|---------------------|--------|
-| Plain · p90_p10_vol_mm + EN-LR | 0.874 ± 0.056 | 0.877 |
-| MONAI · cluster_hist + RBF-SVC | 0.796 ± 0.071 | 0.831 |
-| Late ensemble w=0.5 | **0.891 ± 0.053** | 0.908 |
-| Ensemble + age/sex LR stack | **0.915 ± 0.048** | 0.930 |
+| # | Method | ROC-AUC (mean ± std) | PR-AUC |
+|---|--------|---------------------|--------|
+| 0 | **Clinical · age + sex** (LR) | **0.750 ± 0.081** | 0.756 |
+| 1 | Plain · p90_p10_vol_mm + EN-LR | 0.874 ± 0.056 | 0.877 |
+| 2 | MONAI · cluster_hist + RBF-SVC | 0.796 ± 0.071 | 0.831 |
+| 3 | Late ensemble w=0.5 | **0.891 ± 0.053** | 0.908 |
+| 4 | Ensemble + age/sex LR stack | **0.915 ± 0.048** | 0.930 |
 
 Reproduce (local NPZ + splits): `bash stage_c/run/run_paired_ensemble_mytag.sh`
 
